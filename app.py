@@ -1,51 +1,38 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import smtplib
+import os
 from email.mime.text import MIMEText
 
 app = Flask(__name__)
-import os  
 
-SENDER_EMAIL = os.environ.get('GMAIL_USER')
-SENDER_PASSWORD = os.environ.get('GMAIL_PASS')
-RECEIVER_EMAIL = os.environ.get('GMAIL_USER')
 @app.route('/')
 def home():
     return render_template('index.html')
 
 @app.route('/contact', methods=['POST'])
 def contact():
-    name = request.form['name']
-    email = request.form['email']
-    message = request.form['message']
+    SENDER_EMAIL = os.environ.get('GMAIL_USER')
+    SENDER_PASSWORD = os.environ.get('GMAIL_PASS')
     
-    # Email content
-    subject = f"Portfolio Contact from {name}"
-    body = f"""
-You got a new message from your portfolio website:
+    if not SENDER_EMAIL or not SENDER_PASSWORD:
+        return "ERROR: Env variables set aagala"
+    
+    name = request.form.get('name')
+    email = request.form.get('email')
+    message = request.form.get('message')
 
-Name: {name}
-Email: {email}
-Message: {message}
-"""
-    
     try:
-        msg = MIMEText(body)
-        msg['Subject'] = subject
+        msg = MIMEText(f"Name: {name}\nEmail: {email}\nMessage: {message}")
+        msg['Subject'] = f"Portfolio Contact from {name}"
         msg['From'] = SENDER_EMAIL
-        msg['To'] = RECEIVER_EMAIL
-        
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        msg['To'] = SENDER_EMAIL
+
+        # RENDER KU IDHU DHAN WORK AAGUM - PORT 465 SSL
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)  # <-- CHANGE 1
+        server.login(SENDER_EMAIL, SENDER_PASSWORD)        # <-- CHANGE 2: starttls illa
         server.send_message(msg)
         server.quit()
         
-        print("Email sent successfully!")
-        return redirect(url_for('home', success=True))
-        
+        return "Message sent successfully! Thanks da thalaiva."
     except Exception as e:
-        print(f"Error sending email: {e}")
-        return redirect(url_for('home', error=True))
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        return f"ERROR: {str(e)}"

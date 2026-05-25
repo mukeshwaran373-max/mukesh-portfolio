@@ -3,12 +3,11 @@ import smtplib
 from email.mime.text import MIMEText
 
 app = Flask(__name__)
+import os  
 
-# UN GMAIL DETAILS INGE PODU
-SENDER_EMAIL = "mukeshwaran373@gmail.com"        # ← Your Gmail address (must be the same as the one used to generate the app password)
-SENDER_PASSWORD = "fmwo ivrh zayh latf"       # ←  App password generated from Gmail (not your regular password) - see instructions below
-RECEIVER_EMAIL = "mukeshwaran373@gmail.com"      # ← Receiver's email (can be the same as sender for testing)
-
+SENDER_EMAIL = os.environ.get('GMAIL_USER')
+SENDER_PASSWORD = os.environ.get('GMAIL_PASS')
+RECEIVER_EMAIL = os.environ.get('GMAIL_USER')
 @app.route('/')
 def home():
     return render_template('index.html')

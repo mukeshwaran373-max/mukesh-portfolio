@@ -1,0 +1,13 @@
+services:
+    - type: web
+    name: mukesh-portfolio
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+            - key: SENDER_EMAIL
+        value: mukeshwaran373@gmail.com
+            - key: SENDER_PASSWORD
+        value: fmwo ivrh zayh latf
+            - key: RECEIVER_EMAIL
+        value: mukeshwaran373@gmail.com

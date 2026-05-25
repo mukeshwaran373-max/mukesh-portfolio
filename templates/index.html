@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>V. Mukesh - Python Developer</title>
+    <link rel="stylesheet"  href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        {% if request.args.get('success') %}
+    <p style="background: #28a745; color: white; padding: 15px; border-radius: 10px; text-align: center; font-weight: bold; margin-bottom: 20px;">
+        Message sent successfully! I'll get back to you soon 🚀
+    </p>
+{% endif %}
+        <h1>Hi, i'm V.Mukesh</h1>
+        <!-- RESUME DOWNLOAD BUTTON -->
+<a href="/static/Mukesh_Resume.pdf" download style="display: inline-block; background: #ffc107; color: #000; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 20px 0;">
+    📄 Download My Resume
+</a>
+        <h2>About Me</h2>
+        <p>B.Sc AI & DS Graduate | Python Developer | Ex-Team Lead @ HATSUN Agro pvt Ltd @ IBACO </p>
+        
+        <h2>Skills</h2>
+        <p>Python, Flask, OpenCV, HTML, CSS, SQLite</p>
+        
+        <h2>Projects</h2>
+        <ul>
+            <li>Face Recognition Attendance System - Python, OpenCV</li>
+            <li>Portfolio Website - Flask</li>
+        </ul>
+        
+        <h2>Contact Me:</h2>
+        <div class="contact-box">
+            <form action="/contact" method="POST">
+                <input type="text" name="name" placeholder="enter your name:" required><br>
+                <input type="email" name="email" placeholder="enter your email:" required><br>
+                <textarea name="message" placeholder="Message:" rows="6" required></textarea><br>
+                <button type="submit">Send Message 🚀</button>
+                {% if request.args.get('error') %}
+    <p style="background: #dc3545; color: white; padding: 15px; border-radius: 10px; text-align: center; font-weight: bold; margin-bottom: 20px;">
+        Oops! Something went wrong. Please try again.
+    </p>
+{% endif %}
+            </form>
+        </div>
+    </div>
+</body>
+</html>
